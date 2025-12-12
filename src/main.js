@@ -14,7 +14,7 @@ const camera = new THREE.PerspectiveCamera(
   0.1,
   1000
 );
-camera.position.z = 5;
+camera.position.z = 8;
 scene.add(camera);
 
 const renderer = new THREE.WebGLRenderer({
@@ -28,6 +28,9 @@ controls.autoRotate = true;
 controls.autoRotateSpeed = 2.0;
 controls.enablePan = false;
 
+const museum = new THREE.Group();
+scene.add(museum);
+
 const geometries = [
   new THREE.BoxGeometry(),
   new THREE.SphereGeometry(),
@@ -40,13 +43,18 @@ const geometries = [
   new THREE.TetrahedronGeometry(),
   new THREE.IcosahedronGeometry(),
 ];
+
+const spacing = 3;
+const count = geometries.length;
+const startX = -((count - 1) * spacing) / 2;
+
 geometries.forEach((geometry, i) => {
   const mesh = new THREE.Mesh(
     geometry,
     new THREE.MeshBasicMaterial({ wireframe: true })
   );
-  mesh.position.x = (i - 1) * 2.5;
-  scene.add(mesh);
+  mesh.position.x = startX + i * spacing;
+  museum.add(mesh);
 });
 
 const tick = () => {
