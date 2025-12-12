@@ -57,6 +57,7 @@ window.addEventListener('resize', () => {
 });
 
 window.addEventListener('dblclick', () => {
+  if (!appState.entered) return;
   const fullscreenElement =
     document.fullscreenElement || document.webkitFullscreenElement;
 
