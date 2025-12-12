@@ -12,6 +12,9 @@ enterButton.addEventListener('click', () => {
   controls.autoRotate = true;
   gateEl.classList.add('open');
 
+  enterSound.currentTime = 0;
+  enterSound.play().catch(() => {});
+
   hoverSound
     .play()
     .then(() => {
@@ -29,6 +32,9 @@ const sizes = {
   width: window.innerWidth,
   height: window.innerHeight,
 };
+
+const enterSound = new Audio('/enter.mp3');
+enterSound.volume = 0.6;
 
 const hoverSound = new Audio('/audio.mp3');
 hoverSound.preload = 'auto';
