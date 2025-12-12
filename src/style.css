@@ -9,3 +9,14 @@ body {
 canvas {
   display: block;
 }
+
+#enter {
+  position: fixed;
+  inset: 0;
+  margin: auto;
+  width: 200px;
+  height: 56px;
+  font-size: 18px;
+  cursor: pointer;
+  z-index: 10;
+}

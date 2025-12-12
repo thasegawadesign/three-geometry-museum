@@ -3,6 +3,23 @@ import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
 import './style.css';
 
 const canvas = document.getElementById('webgl');
+const enterButton = document.getElementById('enter');
+
+enterButton.addEventListener('click', () => {
+  appState.entered = true;
+  soundState.enabled = true;
+  enterButton.remove();
+
+  hoverSound
+    .play()
+    .then(() => {
+      hoverSound.pause();
+      hoverSound.currentTime = 0;
+    })
+    .catch(() => {});
+
+  controls.autoRotate = true;
+});
 
 const sizes = {
   width: window.innerWidth,
@@ -13,23 +30,10 @@ const hoverSound = new Audio('/audio.mp3');
 hoverSound.preload = 'auto';
 hoverSound.volume = 0.4;
 
+const appState = {
+  entered: false,
+};
 const soundState = { enabled: false };
-
-window.addEventListener(
-  'pointerdown',
-  () => {
-    soundState.enabled = true;
-    // iOS/Safari対策：無音で一度再生→停止（許可を取りに行く）
-    hoverSound
-      .play()
-      .then(() => {
-        hoverSound.pause();
-        hoverSound.currentTime = 0;
-      })
-      .catch(() => {});
-  },
-  { once: true }
-);
 
 // マウス座標（NDC）
 window.addEventListener('mousemove', (e) => {
@@ -85,7 +89,6 @@ renderer.setSize(window.innerWidth, window.innerHeight);
 
 const controls = new OrbitControls(camera, renderer.domElement);
 controls.enableDamping = true;
-controls.autoRotate = true;
 controls.autoRotateSpeed = 0.5;
 controls.enablePan = false;
 
