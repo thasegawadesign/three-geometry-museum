@@ -4,11 +4,13 @@ import './style.css';
 
 const canvas = document.getElementById('webgl');
 const enterButton = document.getElementById('enter');
+const gateEl = document.getElementById('gate');
 
 enterButton.addEventListener('click', () => {
   appState.entered = true;
   soundState.enabled = true;
-  enterButton.remove();
+  controls.autoRotate = true;
+  gateEl.classList.add('open');
 
   hoverSound
     .play()
@@ -18,7 +20,9 @@ enterButton.addEventListener('click', () => {
     })
     .catch(() => {});
 
-  controls.autoRotate = true;
+  window.setTimeout(() => {
+    gateEl.remove();
+  }, 750);
 });
 
 const sizes = {
@@ -86,6 +90,7 @@ const renderer = new THREE.WebGLRenderer({
   canvas: canvas,
 });
 renderer.setSize(window.innerWidth, window.innerHeight);
+renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
 
 const controls = new OrbitControls(camera, renderer.domElement);
 controls.enableDamping = true;

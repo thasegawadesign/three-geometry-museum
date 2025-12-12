@@ -8,7 +8,11 @@
   </head>
   <body>
     <div id="app">
-      <button id="enter">入場する</button>
+      <div id="gate" aria-hidden="false">
+        <div class="door left"></div>
+        <div class="door right"></div>
+        <button id="enter" type="button">入場する</button>
+      </div>
       <canvas id="webgl"></canvas>
     </div>
     <script type="module" src="/src/main.js"></script>
