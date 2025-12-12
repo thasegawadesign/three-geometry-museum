@@ -9,6 +9,12 @@ const sizes = {
   height: window.innerHeight,
 };
 
+// マウス座標（NDC）
+window.addEventListener('mousemove', (e) => {
+  mouseNdc.x = (e.clientX / window.innerWidth) * 2 - 1;
+  mouseNdc.y = -(e.clientY / window.innerHeight) * 2 + 1;
+});
+
 window.addEventListener('resize', () => {
   sizes.width = window.innerWidth;
   sizes.height = window.innerHeight;
@@ -61,6 +67,13 @@ controls.autoRotate = true;
 controls.autoRotateSpeed = 2.0;
 controls.enablePan = false;
 
+const raycaster = new THREE.Raycaster();
+const mouseNdc = new THREE.Vector2();
+
+const state = {
+  hovered: null,
+};
+
 const museum = new THREE.Group();
 scene.add(museum);
 
@@ -90,7 +103,25 @@ geometries.forEach((geometry, i) => {
   museum.add(mesh);
 });
 
+const updateHovered = () => {
+  raycaster.setFromCamera(mouseNdc, camera);
+  const hits = raycaster.intersectObjects(museum.children, false);
+  const hit = hits[0]?.object ?? null;
+
+  if (state.hovered !== hit) {
+    // 前を戻す
+    state.hovered?.material.color.set(0xffffff);
+
+    // 更新
+    state.hovered = hit;
+
+    // 新しいhover
+    state.hovered?.material.color.set(0xffcc00);
+  }
+};
+
 const tick = () => {
+  updateHovered();
   controls.update();
   renderer.render(scene, camera);
   requestAnimationFrame(tick);
