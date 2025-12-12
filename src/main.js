@@ -9,6 +9,28 @@ const sizes = {
   height: window.innerHeight,
 };
 
+const hoverSound = new Audio('/audio.mp3');
+hoverSound.preload = 'auto';
+hoverSound.volume = 0.4;
+
+const soundState = { enabled: false };
+
+window.addEventListener(
+  'pointerdown',
+  () => {
+    soundState.enabled = true;
+    // iOS/Safari対策：無音で一度再生→停止（許可を取りに行く）
+    hoverSound
+      .play()
+      .then(() => {
+        hoverSound.pause();
+        hoverSound.currentTime = 0;
+      })
+      .catch(() => {});
+  },
+  { once: true }
+);
+
 // マウス座標（NDC）
 window.addEventListener('mousemove', (e) => {
   mouseNdc.x = (e.clientX / window.innerWidth) * 2 - 1;
@@ -117,6 +139,11 @@ const updateHovered = () => {
 
     // 新しいhover
     state.hovered?.material.color.set(0xffcc00);
+
+    if (soundState.enabled && state.hovered) {
+      hoverSound.currentTime = 0; // 連続ホバーでも頭から鳴る
+      hoverSound.play().catch(() => {}); // 未許可だと失敗するので握りつぶす
+    }
   }
 };
 
