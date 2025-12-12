@@ -1,6 +1,6 @@
 import * as THREE from 'three';
-import './style.css';
 import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
+import './style.css';
 
 console.log(THREE);
 
@@ -28,13 +28,26 @@ controls.autoRotate = true;
 controls.autoRotateSpeed = 2.0;
 controls.enablePan = false;
 
-const geometry = new THREE.BoxGeometry();
-const material = new THREE.MeshBasicMaterial({
-  color: 0x00ff00,
-  wireframe: true,
+const geometries = [
+  new THREE.BoxGeometry(),
+  new THREE.SphereGeometry(),
+  new THREE.ConeGeometry(),
+  new THREE.CylinderGeometry(),
+  new THREE.TorusGeometry(),
+  new THREE.TorusKnotGeometry(),
+  new THREE.DodecahedronGeometry(),
+  new THREE.OctahedronGeometry(),
+  new THREE.TetrahedronGeometry(),
+  new THREE.IcosahedronGeometry(),
+];
+geometries.forEach((geometry, i) => {
+  const mesh = new THREE.Mesh(
+    geometry,
+    new THREE.MeshBasicMaterial({ wireframe: true })
+  );
+  mesh.position.x = (i - 1) * 2.5;
+  scene.add(mesh);
 });
-const mesh = new THREE.Mesh(geometry, material);
-scene.add(mesh);
 
 const tick = () => {
   controls.update();
