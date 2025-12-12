@@ -64,7 +64,7 @@ renderer.setSize(window.innerWidth, window.innerHeight);
 const controls = new OrbitControls(camera, renderer.domElement);
 controls.enableDamping = true;
 controls.autoRotate = true;
-controls.autoRotateSpeed = 2.0;
+controls.autoRotateSpeed = 0.5;
 controls.enablePan = false;
 
 const raycaster = new THREE.Raycaster();
