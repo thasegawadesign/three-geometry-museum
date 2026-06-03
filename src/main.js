@@ -1,6 +1,9 @@
+import { inject } from '@vercel/analytics';
 import * as THREE from 'three';
 import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
 import './style.css';
+
+inject();
 
 const canvas = document.getElementById('webgl');
 const enterButton = document.getElementById('enter');
